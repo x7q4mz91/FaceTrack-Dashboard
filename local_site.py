@@ -16,6 +16,7 @@ import webbrowser
 
 HOST = "127.0.0.1"
 PORT = 8765
+DEFAULT_PASSWORD = "camera12"
 MAX_FORM_BYTES = 8192
 SUBJECT_STATUSES = ("Unclassified", "Recognized", "Suspicious")
 MAX_REFERENCE_IMAGES = 8
@@ -372,7 +373,7 @@ class SubjectStore:
 def _configured_password():
     password = os.environ.get("FACE_TRACKER_PASSWORD")
     if password is None:
-        return secrets.token_urlsafe(18)
+        return DEFAULT_PASSWORD
     if len(password) < 12:
         raise RuntimeError(
             "FACE_TRACKER_PASSWORD must be at least 12 characters long."
@@ -570,9 +571,10 @@ def _footage_page(clips, csrf_token):
 
 
 def make_server(store, host=HOST, port=PORT, password=None):
-    password = password if password is not None else _configured_password()
-    if len(password) < 12:
-        raise ValueError("The website password must be at least 12 characters long.")
+    if password is None:
+        password = _configured_password()
+    elif len(password) < 12:
+        raise ValueError("A custom website password must be at least 12 characters long.")
     sessions = {}
     sessions_lock = threading.Lock()
 
@@ -877,7 +879,7 @@ def start_site(store):
     thread.start()
     url = f"http://{HOST}:{PORT}/"
     if configured_password is None:
-        print(f"Temporary archive password: {password}")
+        print(f"Default archive password: {password}")
     else:
         print("Archive password loaded from FACE_TRACKER_PASSWORD.")
     try:

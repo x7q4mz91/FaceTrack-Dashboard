@@ -19,7 +19,7 @@ A local Windows webcam face tracker with a password-protected dashboard for subj
    .\.venv\Scripts\python.exe -m pip install -r requirements.txt
    ```
 
-3. Set a private dashboard password of at least 12 characters. This setting applies to the current PowerShell window:
+3. The default dashboard password is `camera12`. To choose your own password instead, set a value of at least 12 characters in PowerShell before starting the tracker:
 
    ```powershell
    $env:FACE_TRACKER_PASSWORD = "choose-a-private-password"
@@ -31,9 +31,9 @@ A local Windows webcam face tracker with a password-protected dashboard for subj
    .\.venv\Scripts\python.exe ".\python face_tracker.py"
    ```
 
-   The tracker opens the dashboard at <http://127.0.0.1:8765/>. If you do not set `FACE_TRACKER_PASSWORD`, it generates a temporary password and prints it in the PowerShell window each time it starts.
+   The tracker opens the dashboard at <http://127.0.0.1:8765/>. If you did not set `FACE_TRACKER_PASSWORD`, sign in with `camera12`.
 
-To keep a password for future PowerShell windows, run `setx FACE_TRACKER_PASSWORD "choose-a-private-password"` once, then open a new PowerShell window. Keep the password private and use at least 12 characters.
+The default password is public and intended only for convenient local testing. Change it before relying on the dashboard, especially if other people can use your computer. To keep a custom password for future PowerShell windows, run `setx FACE_TRACKER_PASSWORD "choose-a-private-password"` once, then open a new PowerShell window.
 
 Press **Q** in the tracker window to stop the camera and website.
 

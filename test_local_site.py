@@ -7,7 +7,12 @@ import unittest
 from unittest.mock import patch
 from urllib.parse import urlencode
 
-from local_site import SubjectStore, _configured_password, make_server
+from local_site import (
+    DEFAULT_PASSWORD,
+    SubjectStore,
+    _configured_password,
+    make_server,
+)
 
 
 class HiddenFieldParser(HTMLParser):
@@ -153,7 +158,8 @@ class LocalSiteTests(unittest.TestCase):
 
     def test_generated_and_configured_passwords(self):
         with patch("local_site.os.environ.get", return_value=None):
-            self.assertGreaterEqual(len(_configured_password()), 20)
+            self.assertEqual(_configured_password(), DEFAULT_PASSWORD)
+            self.assertEqual(DEFAULT_PASSWORD, "camera12")
         with patch(
             "local_site.os.environ.get",
             return_value=self.PASSWORD,
